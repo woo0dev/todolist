@@ -16,7 +16,6 @@ class AddTodoViewController: UIViewController {
         contentTextView.layer.borderWidth = 0.3
         contentTextView.layer.cornerRadius = 2.0
         contentTextView.clipsToBounds = true
-
     }
     
     
