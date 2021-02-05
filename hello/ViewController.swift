@@ -69,22 +69,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard !list.isEmpty else {
                     return
         }
-        todoListTableView.setEditing(true, animated: true)
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneButtonTap))
-
-        self.navigationItem.leftBarButtonItem = doneButton
-        }
-    
-    let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: #selector(doneButtonTap))
-    
-        @objc
-        func doneButtonTap() {
-            //self.navigationItem.leftBarButtonItem = EditBtn
+        if todoListTableView.isEditing {
             todoListTableView.setEditing(false, animated: true)
-        }
-        
-        override func viewDidAppear(_ animated: Bool) {
-            todoListTableView.reloadData()
+        } else {
+            todoListTableView.setEditing(true, animated: true)
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        todoListTableView.reloadData()
+    }
+}
