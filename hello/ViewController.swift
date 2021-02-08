@@ -18,9 +18,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         todoListTableView.delegate = self
         todoListTableView.dataSource = self
         
-        list.append(TodoList(title: "test1", content:   "testData1"))
-        list.append(TodoList(title: "test2", content: "testData2"))
-        list.append(TodoList(title: "test3", content: "testData3"))
+        loadAllData()
+        print(list.description)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -77,6 +76,41 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        saveAllData()
         todoListTableView.reloadData()
     }
+    
+    func saveAllData() {
+            let data = list.map {
+                [
+                    "title": $0.title,  // $0 : 0번부터
+                    "content": $0.content!,
+                    "isComplete": $0.isComplete
+                ]
+            }
+            
+            print(type(of: data))
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(data, forKey: "items")
+            userDefaults.synchronize()
+    }
+    func loadAllData() {
+            let userDefaults = UserDefaults.standard
+            guard let data = userDefaults.object(forKey: "items") as? [[String: AnyObject]] else {
+                return
+            }
+            
+            print(data.description)
+            
+            // list 배열에 저장하기
+            print(type(of: data))
+            list = data.map {
+                var title = $0["title"] as? String
+                var content = $0["content"] as? String
+                var isComplete = $0["isComplete"] as? Bool
+                
+                return TodoList(title: title!, content: content!, isComplete: isComplete!)
+            }
+        }
+    
 }
